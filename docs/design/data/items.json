@@ -1,0 +1,135 @@
+{
+  "version": 1,
+  "inventorySlots": 40,
+  "currencyId": "mat_silver_coin",
+
+  "items": [
+    {
+      "id": "mat_silver_coin",
+      "displayName": "เงิน",
+      "category": "currency",
+      "stackMax": 999999999,
+      "sellPrice": 0,
+      "buyPrice": 0,
+      "occupiesInventorySlot": false,
+      "description": "เงินตราของแผ่นดิน ใช้ซื้อของและตีบวก"
+    },
+    {
+      "id": "mat_beast_bone",
+      "displayName": "กระดูกสัตว์",
+      "category": "material",
+      "stackMax": 999,
+      "sellPrice": 9,
+      "buyPrice": 0,
+      "occupiesInventorySlot": true,
+      "description": "กระดูกจากสัตว์ป่าที่ถูกมารเข้าครอบ ใช้เป็นวัตถุดิบ"
+    },
+    {
+      "id": "mat_beast_hide",
+      "displayName": "หนังสัตว์",
+      "category": "material",
+      "stackMax": 999,
+      "sellPrice": 14,
+      "buyPrice": 0,
+      "occupiesInventorySlot": true,
+      "description": "หนังเหนียวจากสัตว์ป่า ใช้ทำเกราะเบา"
+    },
+    {
+      "id": "mat_boar_tusk",
+      "displayName": "เขี้ยวหมูปีศาจ",
+      "category": "material",
+      "stackMax": 999,
+      "sellPrice": 60,
+      "buyPrice": 0,
+      "occupiesInventorySlot": true,
+      "rarity": "uncommon",
+      "description": "เขี้ยวที่ยังคุกรุ่นด้วยอาฆาต ใช้ตีบวกอาวุธ (Phase 3)"
+    },
+    {
+      "id": "pot_hp_small",
+      "displayName": "โพชั่นหมึกชุบชีวิต (เล็ก)",
+      "category": "consumable",
+      "stackMax": 99,
+      "sellPrice": 13,
+      "buyPrice": 55,
+      "occupiesInventorySlot": true,
+      "use": {
+        "effect": "heal_hp",
+        "flatAmount": 120,
+        "percentOfMaxAmount": 10.0,
+        "expression": "120 + floor(maxHp * 0.10)",
+        "cooldownTicks": 90,
+        "instant": true,
+        "refuseWhenFull": true
+      },
+      "description": "ฟื้น HP ทันที ใช้ได้แม้กลางคอมโบ"
+    },
+    {
+      "id": "pot_mp_small",
+      "displayName": "โพชั่นหมึกคืนพลัง (เล็ก)",
+      "category": "consumable",
+      "stackMax": 99,
+      "sellPrice": 11,
+      "buyPrice": 45,
+      "occupiesInventorySlot": true,
+      "use": {
+        "effect": "restore_mp",
+        "flatAmount": 40,
+        "percentOfMaxAmount": 10.0,
+        "expression": "40 + floor(maxMp * 0.10)",
+        "cooldownTicks": 90,
+        "instant": true,
+        "refuseWhenFull": true
+      },
+      "description": "ฟื้น MP ทันที"
+    }
+  ],
+
+  "equipment": [
+    {
+      "id": "wep_ascetic_wooden_sword",
+      "displayName": "ดาบไม้พรต",
+      "slot": "weapon",
+      "attackBonus": 10,
+      "defenseBonus": 0,
+      "refineStep": 1,
+      "refineMax": 10,
+      "requiredLevel": 1,
+      "sellPrice": 20,
+      "buyPrice": 90,
+      "isStartingGear": true,
+      "description": "ดาบไม้ฝึกมือของสำนัก เบาและเหนียวเกินคาด"
+    },
+    {
+      "id": "arm_ascetic_robe",
+      "displayName": "ชุดผ้าพรต",
+      "slot": "body",
+      "attackBonus": 0,
+      "defenseBonus": 6,
+      "refineStep": 1,
+      "refineMax": 10,
+      "requiredLevel": 1,
+      "sellPrice": 15,
+      "buyPrice": 70,
+      "isStartingGear": true,
+      "description": "ชุดม่วงดำของนักพรตปราบมาร"
+    },
+    {
+      "id": "wep_jade_ink_sword",
+      "displayName": "ดาบหยกหมึก",
+      "slot": "weapon",
+      "attackBonus": 45,
+      "defenseBonus": 0,
+      "refineStep": 3,
+      "refineMax": 10,
+      "requiredLevel": 28,
+      "sellPrice": 420,
+      "buyPrice": 1800,
+      "isStartingGear": false,
+      "_note": "REFERENCE_ONLY_FOR_UNIT_TEST — ใช้ตรวจ ATK 205 ของตัวละครอ้างอิง Lv.32 ยังไม่ต้องวางในเกม Phase 2",
+      "description": "ดาบคมบางราวเส้นหมึกที่ยังไม่แห้ง"
+    }
+  ],
+
+  "_schemaNote": "refineStep = ATK/DEF ที่เพิ่มต่อ 1 ขั้นการตีบวก · weaponAtkEffective = attackBonus + refineStep * refineLevel · Phase 2 ยังตีบวกไม่ได้ (refineLevel = 0 ตลอด) แต่สูตรต้องคำนวณถูก"
+}

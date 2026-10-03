@@ -1,0 +1,151 @@
+{
+  "id": "movement_config",
+  "version": 1,
+  "simTickHz": 60,
+  "yAxisPositiveDirection": "down",
+
+  "player": {
+    "walkSpeedPxPerSec": 180,
+    "accelPxPerSec2": 1440,
+    "decelPxPerSec2": 2160,
+    "stopEpsilonPxPerSec": 4,
+    "snappyReverse": true,
+    "_snappyReverseNote": "ถ้า sign(target) != sign(vel) ให้ใช้ decel แทน accel (กลับทิศไวขึ้น 15t -> 10t) · ปิดได้ถ้ารู้สึกลื่นเกิน",
+    "ticksToFullSpeed": 8,
+    "ticksToFullStop": 5,
+    "walkAnimThresholdPxPerSec": 12,
+    "normalizeDiagonal": true,
+    "diagonalComponent": 0.70710678,
+    "oppositeKeysCancelToZero": true
+  },
+
+  "inputMapping": {
+    "up": ["KeyW", "ArrowUp"],
+    "down": ["KeyS", "ArrowDown"],
+    "left": ["KeyA", "ArrowLeft"],
+    "right": ["KeyD", "ArrowRight"],
+    "attack": ["KeyJ", "Space"],
+    "potion": ["KeyQ"],
+    "interact": ["KeyE"],
+    "_note": "render layer แปลงเป็น InputFrame boolean แล้วส่งเข้า Sim 1 ครั้ง/tick · WASD และลูกศรเป็น OR กัน ไม่มี priority"
+  },
+
+  "directions": {
+    "count": 8,
+    "indexOrder": ["down", "down_left", "left", "up_left", "up", "up_right", "right", "down_right"],
+    "vectors": [
+      { "index": 0, "name": "down", "x": 0, "y": 1 },
+      { "index": 1, "name": "down_left", "x": -0.70710678, "y": 0.70710678 },
+      { "index": 2, "name": "left", "x": -1, "y": 0 },
+      { "index": 3, "name": "up_left", "x": -0.70710678, "y": -0.70710678 },
+      { "index": 4, "name": "up", "x": 0, "y": -1 },
+      { "index": 5, "name": "up_right", "x": 0.70710678, "y": -0.70710678 },
+      { "index": 6, "name": "right", "x": 1, "y": 0 },
+      { "index": 7, "name": "down_right", "x": 0.70710678, "y": 0.70710678 }
+    ],
+    "lookupTable": {
+      "_keyFormula": "key = (rawX + 1) * 3 + (rawY + 1)",
+      "values": [3, 2, 1, 4, -1, 0, 5, 6, 7],
+      "_minusOneMeans": "ไม่มี input -> คงทิศเดิม ห้าม snap"
+    },
+    "keepFacingWhenNoInput": true,
+    "facingLockedDuringAttack": true,
+    "facingUnchangedDuringHurt": true
+  },
+
+  "animation": {
+    "spritePx": 96,
+    "pivotXInSprite": 48,
+    "pivotYInSprite": 88,
+    "idle": { "frames": 2, "fps": 3, "directions": 8, "supportsSingleFrameFallback": true },
+    "walk": { "frames": 4, "fps": 10, "directions": 8, "slowFps": 6, "slowFpsBelowSpeedFraction": 0.4 },
+    "attack": { "frames": 4, "fps": "bound_to_action_ticks", "directions": 8 },
+    "hurt": { "frames": 1, "fps": 1, "directions": 8, "holdTicks": 8 },
+    "dead": { "frames": 4, "fps": 6, "directions": 8 },
+    "resetFrameOnStateChange": true,
+    "keepFrameOnWalkDirectionChange": true,
+    "statePriority": ["dead", "hurt", "attack", "walk", "idle"],
+    "strideCheck": {
+      "cycleMs": 400,
+      "pxPerCycleAtWalkSpeed": 72,
+      "pxPerFrame": 18
+    }
+  },
+
+  "movementPermissions": {
+    "idle": "full",
+    "walk": "full",
+    "attack_startup": "none",
+    "attack_active": "none",
+    "attack_recovery": "allowed_after_half_recovery",
+    "hurt": "none",
+    "dead": "none"
+  },
+
+  "collision": {
+    "shape": "AABB",
+    "anchorIsPivot": true,
+    "resolutionMode": "per_axis_x_then_y",
+    "enablesWallSliding": true,
+    "broadphase": { "type": "spatial_hash", "cellSizePx": 128 },
+    "subStepMaxPx": 8,
+    "subStepTriggerPx": 16,
+    "playerVsMonsterSolid": false,
+    "monsterVsMonsterSolid": false,
+    "monsterSoftSeparationRadiusPx": 58,
+    "monsterSoftSeparationPushPxPerSec": 90,
+    "tileSizePx": 64,
+    "blockedTileIsFullTile": true
+  },
+
+  "depthSorting": {
+    "expression": "round(pivotY * 10) + layerBias + tieBreak",
+    "pivotYMultiplier": 10,
+    "layerBias": {
+      "groundShadowOrFx": -5,
+      "entityOrProp": 0,
+      "overheadFx": 3,
+      "damageNumber": 5
+    },
+    "tieBreakExpression": "entityId % 3",
+    "fixedDepthLayers": {
+      "groundTilemap": -100000,
+      "groundDecal": -90000,
+      "overheadTilemap": 200000
+    }
+  },
+
+  "occlusion": {
+    "ownedBy": "render_layer_only",
+    "neverSyncedOverNetwork": true,
+    "fadeAlpha": 0.5,
+    "fadeInMs": 120,
+    "fadeInTicks": 7,
+    "fadeOutMs": 260,
+    "fadeOutTicks": 16,
+    "easing": "linear",
+    "holdTicks": 6,
+    "maxFadingObjects": 12,
+    "excessSelection": "largest_overlap_area_first",
+    "triggerSource": "player_hurtbox_vs_prop_occlusionRect",
+    "requiresPropDepthGreaterThanPlayer": true,
+    "freezeAlphaDuringAttackActive": true,
+    "monstersDoNotTriggerFade": true
+  },
+
+  "camera": {
+    "viewportWidthPx": 1920,
+    "viewportHeightPx": 1080,
+    "zoom": 1.0,
+    "deadzoneWidthPx": 200,
+    "deadzoneHeightPx": 130,
+    "smoothTimeConstantMs": 110,
+    "smoothingExpression": "alpha = 1 - exp(-dtSeconds / 0.110)",
+    "alphaAt60Fps": 0.1399,
+    "lookaheadFactor": 0.12,
+    "lookaheadMaxPx": 90,
+    "pixelSnap": true,
+    "clampToMapBounds": true,
+    "shakeAppliedAfterClamp": true
+  }
+}

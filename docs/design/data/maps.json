@@ -1,0 +1,84 @@
+{
+  "version": 1,
+  "tileSizePx": 64,
+  "tileCenterOffsetPx": 32,
+  "_worldPxFormula": "worldPx = tileIndex * 64 + 32 (จุดกลาง tile)",
+
+  "maps": [
+    {
+      "id": "town_silverink",
+      "displayName": "เมืองหมึกเงิน",
+      "widthTiles": 80,
+      "heightTiles": 64,
+      "widthPx": 5120,
+      "heightPx": 4096,
+      "isSafeZone": true,
+      "spawnsMonsters": false,
+      "borderBlockedTiles": 2,
+      "entryPoints": [
+        { "id": "from_field", "tileX": 40, "tileY": 60, "worldX": 2592, "worldY": 3872, "facing": 4 },
+        { "id": "respawn_shrine", "tileX": 40, "tileY": 32, "worldX": 2592, "worldY": 2080, "facing": 0 }
+      ],
+      "zones": [
+        { "id": "plaza", "displayName": "ลานกลางเมือง", "tileX1": 30, "tileY1": 24, "tileX2": 50, "tileY2": 40, "contents": ["shrine", "quest_npc", "ink_fountain"] },
+        { "id": "market", "displayName": "ย่านร้านค้า", "tileX1": 10, "tileY1": 20, "tileX2": 30, "tileY2": 42, "contents": ["shop_npc", "blacksmith_npc_phase3"] },
+        { "id": "residential", "displayName": "ย่านที่พัก", "tileX1": 50, "tileY1": 14, "tileX2": 72, "tileY2": 44, "contents": ["house_small", "house_large"] },
+        { "id": "south_gate", "displayName": "ประตูเมืองทิศใต้", "tileX1": 38, "tileY1": 60, "tileX2": 42, "tileY2": 63, "contents": ["gate_town"] }
+      ],
+      "transitions": [
+        {
+          "id": "town_to_field",
+          "targetMapId": "field_inkmist",
+          "targetEntryPointId": "from_town",
+          "triggerCenterTileX": 40,
+          "triggerCenterTileY": 62,
+          "triggerWidthPx": 256,
+          "triggerHeightPx": 128,
+          "fadeOutMs": 220,
+          "fadeInMs": 220
+        }
+      ]
+    },
+    {
+      "id": "field_inkmist",
+      "displayName": "ทุ่งหมอกหมึก",
+      "widthTiles": 128,
+      "heightTiles": 96,
+      "widthPx": 8192,
+      "heightPx": 6144,
+      "isSafeZone": false,
+      "spawnsMonsters": true,
+      "borderBlockedTiles": 2,
+      "walkableAreaApproxPercent": 78,
+      "difficultyGradient": "south_easy_to_north_hard",
+      "entryPoints": [
+        { "id": "from_town", "tileX": 64, "tileY": 93, "worldX": 4128, "worldY": 5984, "facing": 4 }
+      ],
+      "monsterSpawnZones": [
+        { "id": "boar_z1", "monsterId": "mon_demon_boar", "centerTileX": 62, "centerTileY": 86, "radiusTiles": 8, "count": 3 },
+        { "id": "boar_z2", "monsterId": "mon_demon_boar", "centerTileX": 40, "centerTileY": 74, "radiusTiles": 9, "count": 4 },
+        { "id": "boar_z3", "monsterId": "mon_demon_boar", "centerTileX": 88, "centerTileY": 72, "radiusTiles": 9, "count": 4 },
+        { "id": "boar_z4", "monsterId": "mon_demon_boar", "centerTileX": 28, "centerTileY": 50, "radiusTiles": 10, "count": 4 },
+        { "id": "boar_z5", "monsterId": "mon_demon_boar", "centerTileX": 100, "centerTileY": 46, "radiusTiles": 10, "count": 4 },
+        { "id": "boar_z6", "monsterId": "mon_demon_boar", "centerTileX": 64, "centerTileY": 28, "radiusTiles": 11, "count": 5 }
+      ],
+      "totalMonsterCap": 24,
+      "despawnAllOnMapExit": true,
+      "respawnAllOnMapEnter": true,
+      "_despawnTradeoffNote": "ผู้เล่นออก-เข้าแมพเพื่อรีเซ็ตมอนได้ ยอมรับใน Phase 2 (เสีย fade 440 ms + เดินกลับ) · ถ้าเป็นปัญหาตอน MP ให้ย้ายไปเป็น persistent server-side spawner",
+      "transitions": [
+        {
+          "id": "field_to_town",
+          "targetMapId": "town_silverink",
+          "targetEntryPointId": "from_field",
+          "triggerCenterTileX": 64,
+          "triggerCenterTileY": 94,
+          "triggerWidthPx": 256,
+          "triggerHeightPx": 128,
+          "fadeOutMs": 220,
+          "fadeInMs": 220
+        }
+      ]
+    }
+  ]
+}

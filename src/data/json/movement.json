@@ -1,0 +1,73 @@
+{
+  "id": "movement_config",
+  "version": 1,
+  "simTickHz": 60,
+  "yAxisPositiveDirection": "down",
+  "player": {
+    "walkSpeedPxPerSec": 180,
+    "accelPxPerSec2": 1440,
+    "decelPxPerSec2": 2160,
+    "stopEpsilonPxPerSec": 4,
+    "snappyReverse": true,
+    "ticksToFullSpeed": 8,
+    "ticksToFullStop": 5,
+    "walkAnimThresholdPxPerSec": 12,
+    "normalizeDiagonal": true,
+    "diagonalComponent": 0.70710678,
+    "oppositeKeysCancelToZero": true
+  },
+  "inputMapping": {
+    "up": ["KeyW", "ArrowUp"],
+    "down": ["KeyS", "ArrowDown"],
+    "left": ["KeyA", "ArrowLeft"],
+    "right": ["KeyD", "ArrowRight"],
+    "attack": ["KeyJ", "Space"],
+    "potion": ["KeyQ"],
+    "interact": ["KeyE"]
+  },
+  "playerColliders": {
+    "foot": { "widthPx": 36, "heightPx": 24, "offsetXPx": 0, "offsetYPx": -10 },
+    "hurt": { "widthPx": 44, "heightPx": 72, "offsetXPx": 0, "offsetYPx": -44 }
+  },
+  "directions": {
+    "count": 8,
+    "indexOrder": ["down", "down_left", "left", "up_left", "up", "up_right", "right", "down_right"],
+    "assetDirByIndex": ["s", "sw", "w", "nw", "n", "ne", "e", "se"],
+    "lookupTable": {
+      "values": [3, 2, 1, 4, -1, 0, 5, 6, 7]
+    },
+    "keepFacingWhenNoInput": true
+  },
+  "animation": {
+    "idle": { "fps": 3, "frames": 2 },
+    "walk": { "fps": 10, "frames": 4, "slowFps": 6, "slowFpsBelowSpeedFraction": 0.4 },
+    "keepFrameOnWalkDirectionChange": true,
+    "statePriority": ["dead", "hurt", "attack", "walk", "idle"]
+  },
+  "collision": {
+    "resolutionMode": "per_axis_x_then_y",
+    "broadphase": { "type": "spatial_hash", "cellSizePx": 128 },
+    "subStepMaxPx": 8,
+    "subStepTriggerPx": 16,
+    "tileSizePx": 64,
+    "blockedTileIsFullTile": true
+  },
+  "occlusion": {
+    "fadeAlpha": 0.5,
+    "fadeInMs": 120,
+    "fadeOutMs": 260,
+    "holdTicks": 6
+  },
+  "camera": {
+    "viewportWidthPx": 1920,
+    "viewportHeightPx": 1080,
+    "zoom": 1.0,
+    "deadzoneWidthPx": 200,
+    "deadzoneHeightPx": 130,
+    "smoothTimeConstantMs": 110,
+    "lookaheadFactor": 0.12,
+    "lookaheadMaxPx": 90,
+    "pixelSnap": true,
+    "clampToMapBounds": true
+  }
+}

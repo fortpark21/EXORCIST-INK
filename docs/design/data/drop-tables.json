@@ -1,0 +1,85 @@
+{
+  "version": 1,
+  "rollModel": "independent_roll_per_entry",
+  "_rollModelNote": "แต่ละ entry สุ่มแยกกันตามลำดับ index · ได้หลายอย่างพร้อมกันได้ · ไม่ใช่ weighted-pick-one",
+  "rngCallOrderPerEntry": ["chanceRoll", "quantityRoll"],
+  "quantityRollSkippedWhenMinEqualsMax": true,
+  "rollsStillConsumedWhenInventoryFull": true,
+
+  "dropTables": [
+    {
+      "id": "drop_demon_boar",
+      "sourceMonsterId": "mon_demon_boar",
+      "entries": [
+        {
+          "index": 0,
+          "itemId": "mat_silver_coin",
+          "chancePercent": 100.0,
+          "minQty": 12,
+          "maxQty": 28,
+          "isCurrency": true,
+          "affectedByLuk": false,
+          "bypassesInventory": true
+        },
+        {
+          "index": 1,
+          "itemId": "mat_beast_bone",
+          "chancePercent": 45.0,
+          "minQty": 1,
+          "maxQty": 2,
+          "isCurrency": false,
+          "affectedByLuk": true,
+          "bypassesInventory": false
+        },
+        {
+          "index": 2,
+          "itemId": "mat_beast_hide",
+          "chancePercent": 35.0,
+          "minQty": 1,
+          "maxQty": 2,
+          "isCurrency": false,
+          "affectedByLuk": true,
+          "bypassesInventory": false
+        },
+        {
+          "index": 3,
+          "itemId": "mat_boar_tusk",
+          "chancePercent": 8.0,
+          "minQty": 1,
+          "maxQty": 1,
+          "isCurrency": false,
+          "affectedByLuk": true,
+          "bypassesInventory": false
+        },
+        {
+          "index": 4,
+          "itemId": "pot_hp_small",
+          "chancePercent": 10.0,
+          "minQty": 1,
+          "maxQty": 1,
+          "isCurrency": false,
+          "affectedByLuk": true,
+          "bypassesInventory": false
+        },
+        {
+          "index": 5,
+          "itemId": "pot_mp_small",
+          "chancePercent": 5.0,
+          "minQty": 1,
+          "maxQty": 1,
+          "isCurrency": false,
+          "affectedByLuk": true,
+          "bypassesInventory": false
+        }
+      ],
+      "expectedValues": {
+        "_note": "คำนวณที่ LUK 0 เพื่ออ้างอิงบาลานซ์",
+        "currencyPerKill": 20.0,
+        "chanceAtLeastOneMaterialPercent": 64.25,
+        "materialsPerKill": 1.195,
+        "potionsPerKill": 0.15,
+        "currencyPer33Kills": 660
+      }
+    }
+  ]
+}

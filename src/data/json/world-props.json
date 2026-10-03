@@ -1,0 +1,162 @@
+{
+  "version": 1,
+  "_principle": "collider และ occlusionRect อ้างอิงจาก pivot ของวัตถุ = จุดกลางฐาน · collider ครอบแค่ฐาน ไม่ครอบทั้งภาพ · y ลงเป็นบวก",
+  "colliderShape": "AABB",
+  "pivotRule": "bottom_center_of_sprite",
+
+  "props": [
+    {
+      "id": "house_small",
+      "displayName": "บ้านเล็ก",
+      "visualWidthPx": 256,
+      "visualHeightPx": 320,
+      "colliders": [{ "widthPx": 240, "heightPx": 96, "offsetXPx": 0, "offsetYPx": -40 }],
+      "fadeable": true,
+      "occlusionRect": { "widthPx": 240, "heightPx": 240, "offsetXPx": 0, "offsetYPx": -200 },
+      "interactable": false
+    },
+    {
+      "id": "house_large",
+      "displayName": "บ้านใหญ่",
+      "visualWidthPx": 384,
+      "visualHeightPx": 448,
+      "colliders": [{ "widthPx": 368, "heightPx": 128, "offsetXPx": 0, "offsetYPx": -56 }],
+      "fadeable": true,
+      "occlusionRect": { "widthPx": 368, "heightPx": 340, "offsetXPx": 0, "offsetYPx": -278 },
+      "interactable": false
+    },
+    {
+      "id": "tree_large",
+      "displayName": "ต้นไม้ใหญ่",
+      "visualWidthPx": 192,
+      "visualHeightPx": 256,
+      "colliders": [{ "widthPx": 44, "heightPx": 32, "offsetXPx": 0, "offsetYPx": -14 }],
+      "fadeable": true,
+      "occlusionRect": { "widthPx": 176, "heightPx": 170, "offsetXPx": 0, "offsetYPx": -168 },
+      "interactable": false
+    },
+    {
+      "id": "tree_small",
+      "displayName": "ต้นไม้เล็ก",
+      "visualWidthPx": 128,
+      "visualHeightPx": 160,
+      "colliders": [{ "widthPx": 30, "heightPx": 24, "offsetXPx": 0, "offsetYPx": -10 }],
+      "fadeable": true,
+      "occlusionRect": { "widthPx": 112, "heightPx": 110, "offsetXPx": 0, "offsetYPx": -102 },
+      "interactable": false
+    },
+    {
+      "id": "wall_stone",
+      "displayName": "กำแพงหิน (1 ช่วง)",
+      "visualWidthPx": 64,
+      "visualHeightPx": 128,
+      "colliders": [{ "widthPx": 64, "heightPx": 52, "offsetXPx": 0, "offsetYPx": -24 }],
+      "fadeable": true,
+      "occlusionRect": { "widthPx": 64, "heightPx": 80, "offsetXPx": 0, "offsetYPx": -88 },
+      "interactable": false,
+      "tileable": true,
+      "_note": "collider กว้างเต็ม 64 px พอดี tile เพื่อต่อแนวได้ไม่มีรอยรั่ว"
+    },
+    {
+      "id": "rock_large",
+      "displayName": "หินก้อนใหญ่",
+      "visualWidthPx": 128,
+      "visualHeightPx": 112,
+      "colliders": [{ "widthPx": 96, "heightPx": 48, "offsetXPx": 0, "offsetYPx": -20 }],
+      "fadeable": false,
+      "occlusionRect": null,
+      "interactable": false
+    },
+    {
+      "id": "rock_small",
+      "displayName": "หินก้อนเล็ก",
+      "visualWidthPx": 64,
+      "visualHeightPx": 64,
+      "colliders": [{ "widthPx": 52, "heightPx": 32, "offsetXPx": 0, "offsetYPx": -14 }],
+      "fadeable": false,
+      "occlusionRect": null,
+      "interactable": false
+    },
+    {
+      "id": "crate",
+      "displayName": "ลัง",
+      "visualWidthPx": 64,
+      "visualHeightPx": 64,
+      "colliders": [{ "widthPx": 56, "heightPx": 40, "offsetXPx": 0, "offsetYPx": -18 }],
+      "fadeable": false,
+      "occlusionRect": null,
+      "interactable": false
+    },
+    {
+      "id": "barrel",
+      "displayName": "ถัง",
+      "visualWidthPx": 64,
+      "visualHeightPx": 80,
+      "colliders": [{ "widthPx": 44, "heightPx": 36, "offsetXPx": 0, "offsetYPx": -16 }],
+      "fadeable": false,
+      "occlusionRect": null,
+      "interactable": false
+    },
+    {
+      "id": "sign_wood",
+      "displayName": "ป้ายไม้",
+      "visualWidthPx": 64,
+      "visualHeightPx": 96,
+      "colliders": [{ "widthPx": 40, "heightPx": 20, "offsetXPx": 0, "offsetYPx": -8 }],
+      "fadeable": false,
+      "occlusionRect": null,
+      "interactable": true,
+      "interactRadiusPx": 72
+    },
+    {
+      "id": "shrine",
+      "displayName": "ศาล",
+      "visualWidthPx": 192,
+      "visualHeightPx": 256,
+      "colliders": [{ "widthPx": 160, "heightPx": 80, "offsetXPx": 0, "offsetYPx": -34 }],
+      "fadeable": true,
+      "occlusionRect": { "widthPx": 180, "heightPx": 180, "offsetXPx": 0, "offsetYPx": -164 },
+      "interactable": true,
+      "interactRadiusPx": 110,
+      "isRespawnPoint": true
+    },
+    {
+      "id": "fence_wood",
+      "displayName": "รั้วไม้ (1 ช่วง)",
+      "visualWidthPx": 64,
+      "visualHeightPx": 64,
+      "colliders": [{ "widthPx": 64, "heightPx": 24, "offsetXPx": 0, "offsetYPx": -10 }],
+      "fadeable": false,
+      "occlusionRect": null,
+      "interactable": false,
+      "tileable": true
+    },
+    {
+      "id": "gate_town",
+      "displayName": "ประตูเมือง",
+      "visualWidthPx": 192,
+      "visualHeightPx": 224,
+      "colliders": [
+        { "widthPx": 44, "heightPx": 56, "offsetXPx": -74, "offsetYPx": -26 },
+        { "widthPx": 44, "heightPx": 56, "offsetXPx": 74, "offsetYPx": -26 }
+      ],
+      "passageWidthPx": 104,
+      "fadeable": true,
+      "occlusionRect": { "widthPx": 192, "heightPx": 160, "offsetXPx": 0, "offsetYPx": -144 },
+      "interactable": false,
+      "_note": "ช่องกลาง 104 px > hero collider 36 px เดินผ่านได้ ไม่มี state เปิด/ปิดใน Phase 1"
+    },
+    {
+      "id": "lantern_post",
+      "displayName": "โคมเสา",
+      "visualWidthPx": 64,
+      "visualHeightPx": 160,
+      "colliders": [{ "widthPx": 22, "heightPx": 22, "offsetXPx": 0, "offsetYPx": -10 }],
+      "fadeable": true,
+      "occlusionRect": { "widthPx": 56, "heightPx": 56, "offsetXPx": 0, "offsetYPx": -130 },
+      "interactable": false,
+      "emitsLight": true,
+      "lightRadiusPx": 180
+    }
+  ]
+}

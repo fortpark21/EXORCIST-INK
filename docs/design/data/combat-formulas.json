@@ -1,0 +1,305 @@
+{
+  "id": "combat_formulas",
+  "version": 1,
+  "simTickHz": 60,
+  "msPerTick": 16.6667,
+
+  "resolveOrder": [
+    "HIT_CHECK",
+    "RAW_DAMAGE",
+    "CRIT_ROLL",
+    "DEFENSE_MITIGATION",
+    "CRIT_MULTIPLIER",
+    "VARIANCE",
+    "CLAMP_MIN"
+  ],
+  "rngCallOrderPerAttack": ["hitRoll", "critRoll", "varianceRoll"],
+
+  "hit": {
+    "baseHitChance": 0.8,
+    "perHitDiffChance": 0.004,
+    "minHitChance": 0.5,
+    "maxHitChance": 1.0,
+    "expression": "clamp(0.50, 1.00, 0.80 + (hitAttacker - fleeDefender) * 0.004)"
+  },
+
+  "mitigation": {
+    "model": "divisive_softcap",
+    "kBase": 100,
+    "kPerAttackerLevel": 5,
+    "expression": "reduction = defUsed / (defUsed + 100 + 5 * attackerLevel); afterDef = raw * (1 - reduction)",
+    "critDefPenetrationPercent": 20.0,
+    "defUsedExpression": "isCrit ? defTarget * 0.80 : defTarget"
+  },
+
+  "crit": {
+    "baseRatePercent": 5.0,
+    "ratePerLuk": 0.3,
+    "ratePerDex": 0.1,
+    "rateCapPercent": 60.0,
+    "baseDamageMultiplier": 1.5,
+    "damageMultiplierPerLuk": 0.005,
+    "damageMultiplierCap": 2.5
+  },
+
+  "variance": {
+    "distribution": "uniform",
+    "minPercent": -10.0,
+    "maxPercent": 10.0
+  },
+
+  "minDamage": {
+    "absoluteFloor": 1,
+    "percentOfAttackerAtk": 5.0,
+    "expression": "max(1, floor(attackerAtk * 0.05))"
+  },
+
+  "rounding": {
+    "finalDamage": "floor",
+    "healAmount": "floor",
+    "expGain": "floor",
+    "derivedStats": "floor"
+  },
+
+  "basicAttack": {
+    "id": "atk_ink_sweep",
+    "displayName": "ปัดหมึก",
+    "classId": "sword_exorcist",
+    "manaCost": 0,
+    "comboSteps": 3,
+    "comboWindowTicks": 27,
+    "inputBufferTicks": 12,
+    "postChainLockoutTicks": 12,
+    "aspdScalesStartup": true,
+    "aspdScalesRecovery": true,
+    "aspdScalesActive": false,
+    "minScaledStartupTicks": 2,
+    "minScaledRecoveryTicks": 3,
+    "facingLockedFromStartupThroughActive": true,
+    "movementCancelAllowedAfterRecoveryFraction": 0.5,
+    "cancelableDuringStartup": false,
+    "cancelableDuringActive": false,
+    "steps": [
+      {
+        "step": 1,
+        "displayName": "ปัดเฉียง",
+        "startupTicks": 7,
+        "activeTicks": 5,
+        "recoveryTicks": 10,
+        "damageMultiplier": 1.0,
+        "arcDegrees": 100,
+        "radiusPx": 95,
+        "originForwardPx": 8,
+        "maxTargets": 3,
+        "knockbackPx": 12,
+        "knockbackTicks": 8,
+        "hitStopTicksOnHit": 0
+      },
+      {
+        "step": 2,
+        "displayName": "สวนกลับ",
+        "startupTicks": 6,
+        "activeTicks": 5,
+        "recoveryTicks": 11,
+        "damageMultiplier": 1.15,
+        "arcDegrees": 110,
+        "radiusPx": 100,
+        "originForwardPx": 10,
+        "maxTargets": 3,
+        "knockbackPx": 14,
+        "knockbackTicks": 8,
+        "hitStopTicksOnHit": 0
+      },
+      {
+        "step": 3,
+        "displayName": "ผ่าหมึกดับ",
+        "startupTicks": 9,
+        "activeTicks": 6,
+        "recoveryTicks": 18,
+        "damageMultiplier": 1.45,
+        "arcDegrees": 150,
+        "radiusPx": 118,
+        "originForwardPx": 12,
+        "maxTargets": 5,
+        "knockbackPx": 48,
+        "knockbackTicks": 12,
+        "hitStopTicksOnHit": 5
+      }
+    ],
+    "multiTargetDamageFalloffPercent": 0,
+    "dedupeTargetsPerActiveWindow": true,
+    "checkHitEveryTickDuringActive": true,
+    "excessTargetSelection": "nearest_first"
+  },
+
+  "playerHitboxes": {
+    "collisionBox": { "widthPx": 36, "heightPx": 24, "offsetXPx": 0, "offsetYPx": -10 },
+    "hurtbox": { "widthPx": 44, "heightPx": 72, "offsetXPx": 0, "offsetYPx": -44 },
+    "spritePx": 96,
+    "pivotXInSprite": 48,
+    "pivotYInSprite": 88
+  },
+
+  "playerStagger": {
+    "staggerTicks": 8,
+    "staggerImmunityTicks": 42,
+    "staggerHasDamageThreshold": false,
+    "cancelsComboOnStagger": true,
+    "facingUnchangedOnStagger": true,
+    "fallbackStaggerTicksIfTooPunishing": 5
+  },
+
+  "hitTest": {
+    "model": "sector_vs_circle",
+    "targetRadiusSource": "hurtbox.width / 2",
+    "insideTargetRadiusAlwaysHits": true,
+    "expression": "dist <= radius + targetR AND (dist <= targetR OR angleBetween(facing, toTarget) <= arcDegrees / 2)"
+  },
+
+  "expFromMonster": {
+    "expression": "max(1, floor(monster.expReward * diffMultiplier(monster.level - player.level)))",
+    "absoluteMinimum": 1,
+    "diffMultipliers": [
+      { "minDiff": 5, "maxDiff": 999, "multiplier": 1.25 },
+      { "minDiff": 3, "maxDiff": 4, "multiplier": 1.15 },
+      { "minDiff": -2, "maxDiff": 2, "multiplier": 1.0 },
+      { "minDiff": -5, "maxDiff": -3, "multiplier": 0.75 },
+      { "minDiff": -9, "maxDiff": -6, "multiplier": 0.4 },
+      { "minDiff": -14, "maxDiff": -10, "multiplier": 0.15 },
+      { "minDiff": -999, "maxDiff": -15, "multiplier": 0.05 }
+    ]
+  },
+
+  "dropRateLuk": {
+    "relativeBonusPerLuk": 0.002,
+    "relativeBonusCap": 0.3,
+    "expression": "effectiveRate = min(100, baseRate * (1 + min(0.30, luk * 0.002)))",
+    "appliesToGuaranteedEntries": false,
+    "appliesToQuantityRolls": false,
+    "appliesToCurrency": false
+  },
+
+  "potion": {
+    "globalItemCooldownTicks": 18,
+    "cooldownIsPerItemType": true,
+    "instantNoChannel": true,
+    "usableDuringCombo": true,
+    "usableWhileDead": false,
+    "overhealClampsToMax": true,
+    "refuseWhenResourceFull": true,
+    "refuseDoesNotConsumeItem": true,
+    "refuseDoesNotTriggerCooldown": true
+  },
+
+  "autoPotion": {
+    "defaultEnabled": true,
+    "persistedInSave": true,
+    "triggerHpPercent": 35.0,
+    "internalCooldownTicks": 180,
+    "itemId": "pot_hp_small",
+    "checkAfterDeathCheck": false,
+    "_checkOrderNote": "applyDamage -> deathCheck (if dead STOP) -> autoPotionCheck",
+    "noPotionWarnThrottleTicks": 600
+  },
+
+  "hitStop": {
+    "renderOnly": true,
+    "normalHitTicks": 0,
+    "critTicks": 4,
+    "comboStep3Ticks": 5,
+    "playerHitByChargeTicks": 6,
+    "playerDeathTicks": 10,
+    "freezesWholeScreen": false
+  },
+
+  "screenShake": {
+    "renderOnly": true,
+    "stackingMode": "max_not_additive",
+    "events": {
+      "crit": { "amplitudePx": 2, "durationMs": 100 },
+      "comboStep3Hit": { "amplitudePx": 3, "durationMs": 130 },
+      "playerHitByGore": { "amplitudePx": 4, "durationMs": 150 },
+      "playerHitByCharge": { "amplitudePx": 6, "durationMs": 200 },
+      "monsterDeath": { "amplitudePx": 2, "durationMs": 90 },
+      "playerDeath": { "amplitudePx": 8, "durationMs": 400 }
+    }
+  },
+
+  "damageNumbers": {
+    "renderOnly": true,
+    "riseDistancePx": 46,
+    "durationTicks": 46,
+    "easing": "ease_out_quad",
+    "fadeOutTicks": 14,
+    "xJitterPx": 14,
+    "xJitterSource": "deterministic_from_entityId_and_tick",
+    "stackOffsetPx": 16,
+    "stackWindowTicks": 8,
+    "stackMaxLayers": 5,
+    "spawnOffsetYPx": -20,
+    "depthLayerBias": 5,
+    "maxConcurrent": 40,
+    "outlinePx": 3,
+    "outlineColor": "#000000",
+    "styles": {
+      "damageToMonster": { "color": "#F5F0E6", "fontSizePx": 30, "format": "{value}" },
+      "critToMonster": { "color": "#FFC53D", "fontSizePx": 42, "format": "{value}!", "shakePx": 2, "scalePunchTo": 1.15, "scalePunchTicks": 8 },
+      "damageToPlayer": { "color": "#E34B4B", "fontSizePx": 32, "format": "-{value}" },
+      "healHp": { "color": "#6BD37A", "fontSizePx": 30, "format": "+{value}" },
+      "healMp": { "color": "#5FA8E8", "fontSizePx": 28, "format": "+{value}" },
+      "miss": { "color": "#9A9A9A", "fontSizePx": 26, "format": "หลบ" },
+      "expGain": { "color": "#C9A227", "fontSizePx": 22, "format": "+{value} EXP" }
+    }
+  },
+
+  "edgeCaseRules": {
+    "hpClampMin": 0,
+    "hpClampMaxToMaxHp": true,
+    "deathCondition": "hp <= 0",
+    "multiLevelUpLoop": true,
+    "expAtLevelCapBehavior": "hold_capped_at_expToNext_49",
+    "damageOrderWithinTick": "ascending_entityId",
+    "deathCheckTiming": "after_all_damage_in_tick",
+    "rewardGrantedOnce": true,
+    "deadMonstersHaveNoHurtbox": true,
+    "showTrueDamageNotRemainingHp": true,
+    "inventoryFullRollsStillConsumed": true,
+    "inventoryFullOverflowPolicy": "fill_existing_stacks_then_empty_slots_then_discard_with_warning",
+    "currencyBypassesInventory": true,
+    "knockbackUsesNormalCollision": true,
+    "levelUpResolvesBeforeDeathCheck": true
+  },
+
+  "serverAuthoritative": {
+    "_note": "รายการค่าที่ต้องย้ายไปฝั่ง server วันที่ทำ Multiplayer — ดู 02-combat.md §11",
+    "mustBeServerSide": [
+      "damageResolution",
+      "hitRoll",
+      "critRoll",
+      "varianceRoll",
+      "dropRolls",
+      "currentHpMp",
+      "sectorHitTest",
+      "expGain",
+      "levelAndPointAllocation",
+      "deathAndPenalty",
+      "inventoryAndCurrency",
+      "monsterSpawnRespawnAggroState",
+      "monsterPositions",
+      "allCooldowns"
+    ],
+    "clientSideOk": [
+      "damageNumbers",
+      "screenShake",
+      "hitStop",
+      "occlusionFade",
+      "camera",
+      "animationFrameIndex",
+      "audio",
+      "lootToast",
+      "uiLayout"
+    ],
+    "rngStreams": ["rngGameplay", "rngCosmetic"],
+    "cooldownTimeSource": "sim_ticks_only_never_wallclock"
+  }
+}

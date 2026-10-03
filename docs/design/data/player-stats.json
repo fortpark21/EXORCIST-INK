@@ -1,0 +1,156 @@
+{
+  "id": "player_stats_sword_exorcist",
+  "version": 1,
+  "classId": "sword_exorcist",
+  "classDisplayName": "จอมยุทธ์ดาบปราบมาร",
+  "levelCap": 50,
+
+  "startingStats": {
+    "level": 1,
+    "str": 8,
+    "dex": 6,
+    "int": 4,
+    "vit": 7,
+    "luk": 5,
+    "statPointsUnspent": 0,
+    "skillPointsUnspent": 0,
+    "totalStatValue": 30
+  },
+
+  "statCapPerStat": 99,
+  "statPointCostPerPoint": 1,
+  "respecAvailable": false,
+
+  "pointsPerLevel": {
+    "statPointsPerLevel": 4,
+    "statPointBonus": { "everyNLevels": 5, "amount": 1 },
+    "skillPointsPerLevel": 1,
+    "skillPointBonus": { "everyNLevels": 10, "amount": 1 }
+  },
+
+  "resourceFormulas": {
+    "maxHp": {
+      "expression": "150 + (level - 1) * 30 + vit * 20",
+      "base": 150,
+      "perLevel": 30,
+      "perVit": 20
+    },
+    "maxMp": {
+      "expression": "50 + (level - 1) * 10 + int * 10",
+      "base": 50,
+      "perLevel": 10,
+      "perInt": 10
+    }
+  },
+
+  "regen": {
+    "hpPerSecBase": 0.5,
+    "hpPerSecPerVit": 0.04,
+    "mpPerSecBase": 0.8,
+    "mpPerSecPerInt": 0.05,
+    "outOfCombatTicks": 300,
+    "outOfCombatHpMultiplier": 6.0,
+    "outOfCombatMpMultiplier": 4.0,
+    "useFractionalAccumulator": true
+  },
+
+  "statEffectsPerPoint": {
+    "str": {
+      "atkFlat": 2.0
+    },
+    "dex": {
+      "atkFlat": 0.5,
+      "aspdPercent": 0.4,
+      "aspdPercentCap": 40.0,
+      "critRatePercent": 0.1,
+      "hitFlat": 1.0,
+      "fleeFlat": 0.8
+    },
+    "int": {
+      "maxMpFlat": 10,
+      "mpRegenPerSec": 0.05,
+      "matkFlat": 1.5,
+      "_matkNote": "RESERVED_PHASE3_LOCKED_CLASSES"
+    },
+    "vit": {
+      "maxHpFlat": 20,
+      "defFlat": 0.5,
+      "hpRegenPerSec": 0.04
+    },
+    "luk": {
+      "critRatePercent": 0.3,
+      "critDamageMultiplierFlat": 0.005,
+      "dropRateRelativePercent": 0.2,
+      "dropRateRelativeCapPercent": 30.0
+    }
+  },
+
+  "levelDerived": {
+    "atk": { "expression": "10 + level", "base": 10, "perLevel": 1 },
+    "def": { "expression": "floor(level * 0.3)", "perLevel": 0.3, "rounding": "floor" },
+    "hitBase": { "expression": "50 + level", "base": 50, "perLevel": 1 },
+    "fleeBase": { "expression": "30 + level", "base": 30, "perLevel": 1 }
+  },
+
+  "derivedFormulas": {
+    "atk": "floor(10 + level + str * 2.0 + dex * 0.5 + weaponAtkEffective)",
+    "def": "armorDefTotal + floor(vit * 0.5) + floor(level * 0.3)",
+    "weaponAtkEffective": "weapon.atk + weapon.refineStep * refineLevel",
+    "hit": "50 + level + dex * 1.0",
+    "flee": "30 + level + dex * 0.8",
+    "aspdBonus": "min(0.40, dex * 0.004)",
+    "critRatePercent": "min(60.0, 5.0 + luk * 0.30 + dex * 0.10)",
+    "critDamageMultiplier": "min(2.50, 1.50 + luk * 0.005)"
+  },
+
+  "levelUpBehavior": {
+    "carryOverExcessExp": true,
+    "allowMultipleLevelsPerGrant": true,
+    "refillHpOnLevelUp": true,
+    "refillMpOnLevelUp": true,
+    "emitEventPerLevel": true
+  },
+
+  "deathPenalty": {
+    "expPenaltyPercentOfCurrentLevelRequirement": 3.0,
+    "gracePeriodMaxLevel": 5,
+    "allowDeLevel": false,
+    "loseItems": false,
+    "loseGold": false,
+    "respawnMapId": "town_silverink",
+    "respawnTileX": 40,
+    "respawnTileY": 32,
+    "respawnWorldX": 2592,
+    "respawnWorldY": 2080,
+    "respawnHpPercent": 50,
+    "respawnMpPercent": 30,
+    "respawnInvulnerableTicks": 180,
+    "deathAnimTicks": 72,
+    "autoSaveOnRespawn": true
+  },
+
+  "referenceBuildCheck": {
+    "_note": "ค่านี้คือ build จาก mockup UI ใช้เป็น unit test fixture",
+    "level": 32,
+    "str": 42,
+    "dex": 38,
+    "int": 26,
+    "vit": 36,
+    "luk": 18,
+    "expectedTotalStatValue": 160,
+    "expectedStatPointsEarnedTotal": 130,
+    "expectedSkillPointsEarnedTotal": 34,
+    "expectedMaxHp": 1800,
+    "expectedMaxMp": 620,
+    "expectedAtkWithWeapon": 205,
+    "expectedWeaponId": "wep_jade_ink_sword",
+    "expectedRefineLevel": 5,
+    "expectedArmorDefTotal": 30,
+    "expectedDef": 57,
+    "expectedCritRatePercent": 14.2,
+    "expectedCritDamageMultiplier": 1.59,
+    "expectedAspdBonus": 0.152,
+    "expectedHit": 120,
+    "expectedFlee": 92
+  }
+}

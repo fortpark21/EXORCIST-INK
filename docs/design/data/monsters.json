@@ -1,0 +1,170 @@
+{
+  "version": 1,
+  "monsters": [
+    {
+      "id": "mon_demon_boar",
+      "displayName": "หมูปีศาจ",
+      "displayNameEn": "Demon Boar",
+      "level": 6,
+
+      "maxHp": 320,
+      "atk": 38,
+      "def": 18,
+      "mdef": 6,
+      "hit": 45,
+      "flee": 40,
+      "critRatePercent": 3.0,
+      "critDamageMultiplier": 1.4,
+
+      "expReward": 42,
+      "dropTableId": "drop_demon_boar",
+
+      "spritePx": 96,
+      "pivotXInSprite": 48,
+      "pivotYInSprite": 88,
+      "collisionBox": { "widthPx": 56, "heightPx": 36, "offsetXPx": 0, "offsetYPx": -16 },
+      "hurtbox": { "widthPx": 60, "heightPx": 52, "offsetXPx": 0, "offsetYPx": -30 },
+
+      "movement": {
+        "speedPatrolPxPerSec": 55,
+        "speedChasePxPerSec": 145,
+        "speedChargePxPerSec": 300,
+        "accelPxPerSec2": 900,
+        "decelPxPerSec2": 1400,
+        "directionMode": "8_way",
+        "softSeparationRadiusPx": 58,
+        "softSeparationPushPxPerSec": 90
+      },
+
+      "ranges": {
+        "aggroRangePx": 280,
+        "aggroLoseRangePx": 560,
+        "aggroLoseTicks": 300,
+        "attackRangePx": 72,
+        "attackRangeExitPx": 92,
+        "chargeRangeMinPx": 180,
+        "chargeRangeMaxPx": 420,
+        "chargeAlignToleranceDeg": 25,
+        "orbitRadiusPx": 150
+      },
+
+      "attacks": [
+        {
+          "id": "boar_gore",
+          "displayName": "พุ่งขวิด",
+          "startupTicks": 27,
+          "activeTicks": 7,
+          "recoveryTicks": 42,
+          "attackIntervalTicks": 96,
+          "damageMultiplier": 1.0,
+          "arcDegrees": 90,
+          "radiusPx": 78,
+          "originForwardPx": 10,
+          "maxTargets": 1,
+          "knockbackPx": 60,
+          "knockbackTicks": 9,
+          "facingLockedFromStartup": true,
+          "velocityZeroDuringStartupAndActive": true
+        },
+        {
+          "id": "boar_charge",
+          "displayName": "พุ่งชน",
+          "telegraphTicks": 36,
+          "dashMaxTicks": 30,
+          "recoveryTicks": 48,
+          "recoveryTicksOnWallHit": 72,
+          "cooldownTicks": 360,
+          "damageMultiplier": 1.8,
+          "hitboxSource": "collisionBox_while_dashing",
+          "maxTargets": 1,
+          "knockbackPx": 90,
+          "knockbackTicks": 12,
+          "facingLockedFromTelegraph": true,
+          "canTurnDuringDash": false,
+          "dashEndsOn": ["player_hit", "wall_hit", "max_ticks"],
+          "selfDamageOnWallHit": 0
+        }
+      ],
+
+      "stagger": {
+        "staggerDamageThresholdPercentOfMaxHp": 8.0,
+        "staggerDamageThresholdAbsolute": 26,
+        "staggerTicks": 8,
+        "staggerImmunityTicks": 90,
+        "invulnerableDuringStagger": false,
+        "knockbackDirectionSource": "attacker_facing",
+        "knockbackEasing": "ease_out",
+        "knockbackByComboStep": [
+          { "step": 1, "distancePx": 12, "ticks": 8 },
+          { "step": 2, "distancePx": 14, "ticks": 8 },
+          { "step": 3, "distancePx": 48, "ticks": 12 }
+        ]
+      },
+
+      "ai": {
+        "initialState": "IDLE",
+        "idleTicksMin": 120,
+        "idleTicksMax": 300,
+        "patrolArrivalThresholdPx": 16,
+        "patrolTimeoutTicks": 600,
+        "forceAggroOnDamage": true,
+        "requiresLineOfSight": false,
+        "maxSimultaneousChasersPerPlayer": 6,
+        "maxMeleeSlots": 3,
+        "orbitDirectionSource": "entityId_modulo_2",
+        "states": ["IDLE", "PATROL", "CHASE", "ATTACK", "CHARGE", "HURT", "DEAD"],
+        "transitions": [
+          { "from": "IDLE", "to": "PATROL", "when": "idleTicks elapsed" },
+          { "from": "IDLE", "to": "CHASE", "when": "distToPlayer <= aggroRangePx" },
+          { "from": "PATROL", "to": "IDLE", "when": "arrived OR patrolTimeoutTicks elapsed" },
+          { "from": "PATROL", "to": "CHASE", "when": "distToPlayer <= aggroRangePx" },
+          { "from": "CHASE", "to": "ATTACK", "when": "distToPlayer <= attackRangePx AND attackIntervalReady" },
+          { "from": "CHASE", "to": "CHARGE", "when": "distToPlayer in [chargeRangeMinPx, chargeRangeMaxPx] AND chargeCooldownReady AND alignDeg <= chargeAlignToleranceDeg" },
+          { "from": "CHASE", "to": "PATROL", "when": "distToPlayer > aggroLoseRangePx OR chaseTicks > aggroLoseTicks" },
+          { "from": "ATTACK", "to": "CHASE", "when": "recovery finished" },
+          { "from": "CHARGE", "to": "CHASE", "when": "recovery finished" },
+          { "from": "ANY", "to": "HURT", "when": "staggerTriggered" },
+          { "from": "HURT", "to": "CHASE", "when": "staggerTicks elapsed" },
+          { "from": "ANY", "to": "DEAD", "when": "hp <= 0" }
+        ]
+      },
+
+      "death": {
+        "deathAnimTicks": 40,
+        "corpseLingerTicks": 60,
+        "corpseFadeTicks": 30,
+        "removeHurtboxOnDeath": true,
+        "removeColliderOnDeath": true,
+        "grantRewardsOnce": true,
+        "grantRewardsAtTick": "on_enter_DEAD",
+        "autoLootToPlayer": true
+      },
+
+      "respawn": {
+        "respawnTicks": 1500,
+        "spawnMinDistanceFromPlayerPx": 480,
+        "spawnMinDistanceFromPropPx": 48,
+        "retryDelayTicks": 60,
+        "maxRetries": 20,
+        "fallbackIgnoresDistanceAfterMaxRetries": true,
+        "spawnAtFullHp": true
+      },
+
+      "multiplayerFields": {
+        "_note": "ใส่ไว้ตั้งแต่ Phase 2 เพื่อไม่ต้องรื้อตอนทำ MP — ยังไม่ใช้งาน",
+        "damageContributors": {},
+        "ownerEntityId": null
+      },
+
+      "animations": {
+        "idle": { "frames": 2, "fps": 3, "directions": 8 },
+        "walk": { "frames": 4, "fps": 8, "directions": 8 },
+        "attack": { "frames": 4, "fps": "bound_to_action_ticks", "directions": 8 },
+        "charge": { "frames": 4, "fps": 12, "directions": 8 },
+        "hurt": { "frames": 1, "fps": 1, "directions": 8 },
+        "dead": { "frames": 4, "fps": 6, "directions": 8 }
+      }
+    }
+  ],
+  "_phaseNote": "Phase 1-2 มีมอนสเตอร์ตัวเดียว · Ink Wisp และมอนสเตอร์ Lv.10+ อยู่ใน 04-backlog.md"
+}
